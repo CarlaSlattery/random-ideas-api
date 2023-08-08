@@ -8,9 +8,11 @@ class Modal {
   addEventListeners(){
     this._modalBtn.addEventListener("click", this.open.bind(this));
     window.addEventListener("click", this.outsideClick.bind(this));
+    //using IdeaForm custom event 
+    document.addEventListener("closeModal", () => this.close());
   }
 
-  open() {
+  open() {                                                                             
     this._modal.style.display = "block";
   }
 
