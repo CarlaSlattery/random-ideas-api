@@ -147,8 +147,12 @@ form label {
   background: red;
 }
 
-.tag-inventions {
+.tag-finance {
   background: orange;
+}
+
+.tag-lifestyle {
+  background: fuchsia;
 }
 
 .delete {
