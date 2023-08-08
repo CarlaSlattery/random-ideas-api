@@ -1,53 +1,46 @@
-class IdeaList {
-    constructor(){
-        this._ideaListEl = document.querySelector("#idea-list")
-        this._ideas = [
-          {
-            id: 1,
-            text: "Idea 1",
-            tag: "Business",
-            username: "Frank",
-            date: "02/01/23",
-          },
-          {
-            id: 2,
-            text: "Idea 2",
-            tag: "Technology",
-            username: "Carla",
-            date: "02/05/23",
-          },
-          {
-            id: 3,
-            text: "Idea 3",
-            tag: "Finance",
-            username: "Lexi",
-            date: "17/01/23",
-          },
-        ];
-        this._validTags = new Set();
-        this._validTags.add("technology")
-        this._validTags.add("software");
-        this._validTags.add("business");
-        this._validTags.add("education");
-        this._validTags.add("health");
-        this._validTags.add("finance");
-        this._validTags.add("lifestyle");
-    }
+import IdeasApi from "../services/ideasApi"
 
-    getTagClass(tag){
-        tag = tag.toLowerCase();
-        let tagClass = "";
-        if(this._validTags.has(tag)){
-            tagClass = `tag-${tag}`
-        } else {
-            tagClass = "";
-        }
-        return tagClass;
+class IdeaList {
+  constructor() {
+    this._ideaListEl = document.querySelector("#idea-list");
+    this._ideas = [];
+    this.getIdeas();
+    this._validTags = new Set();
+    this._validTags.add("technology");
+    this._validTags.add("software");
+    this._validTags.add("business");
+    this._validTags.add("education");
+    this._validTags.add("health");
+    this._validTags.add("finance");
+    this._validTags.add("lifestyle");
+  }
+
+  async getIdeas(){
+    try {
+        const res = await IdeasApi.getIdeas();
+        this._ideas = res.data.data
+        console.log(this._ideas)
+        this.render();
+    } catch (error) {
+        console.log(error)
     }
-    render(){
-        this._ideaListEl.innerHTML = this._ideas.map((idea) => {
-            const tagClass = this.getTagClass(idea.tag)
-            return `
+  }
+
+  getTagClass(tag) {
+    tag = tag.toLowerCase();
+    let tagClass = "";
+    if (this._validTags.has(tag)) {
+      tagClass = `tag-${tag}`;
+    } else {
+      tagClass = "";
+    }
+    return tagClass;
+  }
+  render() {
+    this._ideaListEl.innerHTML = this._ideas
+      .map((idea) => {
+        const tagClass = this.getTagClass(idea.tag);
+        return `
              <div class="card">
           <button class="delete"><i class="fas fa-times"></i></button>
           <h3>
@@ -59,9 +52,9 @@ class IdeaList {
             <span class="author">${idea.username}</span>
           </p>
         </div>`;
-        }).join("");
-    }
+      })
+      .join("");
+  }
 }
 
 export default IdeaList;
-
